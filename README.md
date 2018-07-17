@@ -1,4 +1,5 @@
 # Elasticsearch Partitioning
+[![image](https://img.shields.io/pypi/v/elasticsearch-partition.svg)](https://pypi.python.org/pypi/elasticsearch-partition)
 [![Build Status](https://travis-ci.com/kandziu/elasticsearch-partition.svg?branch=master)](https://travis-ci.com/kandziu/elasticsearch-partition)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/kandziu/elasticsearch-partition/blob/master/LICENSE)
 [![codecov](https://codecov.io/gh/kandziu/elasticsearch-partition/branch/master/graph/badge.svg)](https://codecov.io/gh/kandziu/elasticsearch-partition)
