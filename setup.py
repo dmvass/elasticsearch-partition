@@ -28,5 +28,6 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    keywords=['elasticsearch', 'partition', 'partitioning']
+    keywords=['elasticsearch', 'partition', 'partitioning'],
+    tests_require=['coverage']
 )

@@ -6,6 +6,7 @@ build
 dist
 
 # Unit test / coverage reports
+.eggs
 .coverage
 .tox
 
