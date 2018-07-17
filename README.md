@@ -1,6 +1,7 @@
 # Elasticsearch Partitioning
 [![Build Status](https://travis-ci.com/kandziu/elasticsearch-partition.svg?branch=master)](https://travis-ci.com/kandziu/elasticsearch-partition)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/kandziu/elasticsearch-partition/blob/master/LICENSE)
+[![codecov](https://codecov.io/gh/kandziu/elasticsearch-partition/branch/master/graph/badge.svg)](https://codecov.io/gh/kandziu/elasticsearch-partition)
 
 A Python library for creating partitioned indexes by date range. This can be
 achieved with the Elasticsearch Multiple Indeces API because most Elasticsearch
