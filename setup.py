@@ -1,21 +1,14 @@
-import re
+from os.path import join, dirname
 import setuptools
-import pathlib
 
 
-# Loading version
-here = pathlib.Path(__file__).parent
-txt = (here / 'elasticsearch_partition' / '__init__.py').read_text()
-__version__ = re.findall(r"^__version__ = '([^']+)'\r?$", txt, re.M)[0]
-
-
-with open("README.md", "r") as fh:
+with open(join(dirname(__file__), "README.md"), "r") as fh:
     long_description = fh.read()
 
 
 setuptools.setup(
     name="elasticsearch_partition",
-    version=__version__,
+    version="1.0.0",
     author="Dmitri Vasilishin",
     author_email="vasilishin.d.o@gmail.com",
     description="A Python library for creating Elasticsearch partitioned indexes by date range",
