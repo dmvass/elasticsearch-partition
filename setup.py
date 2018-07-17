@@ -1,25 +1,12 @@
 import re
 import setuptools
+import pathlib
 
 
-def find_version(fname):
-    """Attempts to find the version number in the file names fname.
-    Raises RuntimeError if not found.
-    """
-    version = ''
-    with open(fname, 'r') as fp:
-        reg = re.compile(r'__version__ = [\'"]([^\'"]*)[\'"]')
-        for line in fp:
-            m = reg.match(line)
-            if m:
-                version = m.group(1)
-                break
-    if not version:
-        raise RuntimeError('Cannot find version information')
-    return version
-
-
-__version__ = find_version('elasticsearch_partition/__init__.py')
+# Loading version
+here = pathlib.Path(__file__).parent
+txt = (here / 'elasticsearch_partition' / '__init__.py').read_text()
+__version__ = re.findall(r"^__version__ = '([^']+)'\r?$", txt, re.M)[0]
 
 
 with open("README.md", "r") as fh:
@@ -31,7 +18,7 @@ setuptools.setup(
     version=__version__,
     author="Dmitri Vasilishin",
     author_email="vasilishin.d.o@gmail.com",
-    description="A small example package",
+    description="A Python library for creating Elasticsearch partitioned indexes by date range",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/kandziu/elasticsearch-partition",
@@ -48,5 +35,5 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    keywords=['elasticsearch', 'partition']
+    keywords=['elasticsearch', 'partition', 'partitioning']
 )
