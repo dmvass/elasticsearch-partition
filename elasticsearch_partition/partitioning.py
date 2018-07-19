@@ -1,4 +1,4 @@
-""" This module provide range partition method for your Elasticsearch
+"""This module provide range partition method for your Elasticsearch
 indexes. If you have a logic index partition you could use this module
 for creating and searching through indexes by time range.
 

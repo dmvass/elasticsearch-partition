@@ -54,12 +54,16 @@ class TestLittleEndianDateFormatter(unittest.TestCase):
         actual = self.formatter.fmt_year(2018)
         self.assertEqual(actual, '2018')
         # Test with wildcard
+        actual = self.formatter.fmt_year(2018, wildcard=True)
+        self.assertEqual(actual, '*-2018')
 
     def test_fmt_month(self):
         # Test without wildcard
         actual = self.formatter.fmt_month(2018, 4)
         self.assertEqual(actual, '04-2018')
         # Test with wildcard
+        actual = self.formatter.fmt_month(2018, 4, wildcard=True)
+        self.assertEqual(actual, '*-04-2018')
 
     def test_fmt_day(self):
         actual = self.formatter.fmt_day(2018, 4, 20)

@@ -117,7 +117,7 @@ class LittleEndianDateFormatter(DateFormatter):
         """
         date = datetime.date(year=year, month=month, day=1)
         if wildcard:
-            return date.strftime('*{sep}%m{sep}%Y{sep}'.format(sep=self._sep))
+            return date.strftime('*{sep}%m{sep}%Y'.format(sep=self._sep))
         return date.strftime('%m{sep}%Y'.format(sep=self._sep))
 
     def fmt_day(self, year, month, day):
