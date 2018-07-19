@@ -4,12 +4,13 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/kandziu/elasticsearch-partition/blob/master/LICENSE)
 [![codecov](https://codecov.io/gh/kandziu/elasticsearch-partition/branch/master/graph/badge.svg)](https://codecov.io/gh/kandziu/elasticsearch-partition)
 
-A Python library for creating partitioned indexes by date range. This can be
-achieved with the Elasticsearch Multiple Indeces API because most Elasticsearch
-APIs that refer to an index parameter support execution across multiple indices,
-using simple `test1,test2,test3` notation (or _all for all indices). It also
-support wildcards, for example: test*, `*test`, `te*t` or `*test*`, and the
-ability to "exclude" (-), for example: test*,-test3.
+A Python library for creating indexes by date range and fetching data from
+partitioned indexes. This can be achieved with the Elasticsearch Multiple
+Indeces API because most Elasticsearch APIs that refer to an index parameter
+support execution across multiple indices, using simple `test1,test2,test3`
+notation (or _all for all indices). It also support wildcards, for example:
+test*, `*test`, `te*t` or `*test*`, and the ability to "exclude" (-), for
+example: test*,-test3.
 
 For time oriented data, such as logs, a common strategy is to partition data
 into indexes that hold data for a certain time range. For example, the index
@@ -30,8 +31,8 @@ you are searching for something that happened on `2018-01-01`, there's no point
 in searching any other index than that for `2018-01-01`.
 
 Using this technique and `elasticsear-partition` module you can easy implemet
-`Range Partitionnig` approach for your application queries from Elasticsearch.
-Some of this examples we will consider below.
+`Range Partitionnig` approach for your Elasticsearch queries. Some of this
+examples we will consider below.
 
 ## Installation
 Install the elasticsearch partition package with pip:
