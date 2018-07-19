@@ -8,7 +8,7 @@ with open(join(dirname(__file__), "README.md"), "r") as fh:
 
 setuptools.setup(
     name="elasticsearch_partition",
-    version="1.0.0",
+    version="1.0.1",
     author="Dmitri Vasilishin",
     author_email="vasilishin.d.o@gmail.com",
     description="A Python library for creating Elasticsearch partitioned indexes by date range",
