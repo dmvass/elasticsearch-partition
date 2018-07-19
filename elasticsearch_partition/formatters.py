@@ -1,6 +1,9 @@
 from abc import ABCMeta, abstractmethod
 import datetime
 
+
+INVALID_SEP_CHARS = ['\\', '/', '*', '?', '"', '<', '>', '|', ' ', ',']
+
 # Abstract metaclass with py2/py3 support
 Abstract = ABCMeta('Abstract', (object,), {})
 
@@ -15,6 +18,10 @@ class DateFormatter(Abstract):
         Accepts separation character and initialize specified
         date formatter.
         """
+        if sep in INVALID_SEP_CHARS:
+            raise ValueError(
+                "The separation character '%s' is not valid" % sep
+            )
         self._sep = sep
 
     @abstractmethod

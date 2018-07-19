@@ -1,11 +1,11 @@
-"""A partition is a division of a logical database or its constituent
-elements into distinct independent parts. Database partitioning is normally
-done for manageability, performance or availability reasons, or for load
-balancing.
+""" This module provide range partition method for your Elasticsearch
+indexes. If you have a logic index partition you could use this module
+for creating and searching through indexes by time range.
 
-This module provide range partition method for your Elasticsearch indexes.
-If you have a logic index partition you could use this module for creating
-and searching through indexes by time range.
+A partition is a division of a logical database or its constituent
+elements into distinct independent parts. Database partitioning is
+normally done for manageability, performance or availability reasons,
+or for load balancing.
 """
 
 from calendar import monthrange
