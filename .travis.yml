@@ -1,6 +1,6 @@
 sudo: false
 language: python
-
+dist: xenial
 matrix:
     include:
         - python: pypy2.7-6.0
