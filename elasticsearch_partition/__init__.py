@@ -1,5 +1,5 @@
-from .partitioning import RangePartitioning, partition
+from .partitioning import partition, RangePartitioning
 
 
-__author__ = 'Dmitri Vasilishin'
-__all__ = ('RangePartitioning', 'partition')
+__author__ = "Dmitri Vasilishin"
+__all__ = ("partition", "RangePartitioning")

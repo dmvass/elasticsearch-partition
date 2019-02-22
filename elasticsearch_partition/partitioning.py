@@ -12,10 +12,10 @@ from calendar import monthrange
 import datetime
 from itertools import groupby
 
-from .formatters import DateFormatter, BigEndianDateFormatter
+from .formatters import BigEndianDateFormatter, DateFormatter
 
 
-__all__ = ('RangePartitioning', 'TimeWindow', 'partition')
+__all__ = ("RangePartitioning", "TimeWindow", "partition")
 
 
 # Public constants for convenience
@@ -65,11 +65,11 @@ def _exclude(pattern):
     :param str pattern: Index name with a specified symbol
     :rtype: str
     """
-    return '-' + pattern
+    return "-" + pattern
 
 
 class TimeWindow:
-    __slots__ = ('since', 'until')
+    __slots__ = ("since", "until")
 
     def __init__(self, since, until):
         if not isinstance(since, datetime.date):
@@ -122,7 +122,7 @@ class RangePartitioning:
     def __init__(self,
                  frequency=DAY,
                  formatter=None,
-                 escape='*',
+                 escape="*",
                  now_func=None):
         """
         Initialize range partitioning instance.
