@@ -2,10 +2,10 @@ from abc import ABCMeta, abstractmethod
 import datetime
 
 
-INVALID_SEP_CHARS = ['\\', '/', '*', '?', '"', '<', '>', '|', ' ', ',']
+INVALID_SEP_CHARS = ["\\", "/", "*", "?", "\"", "<", ">", "|", " ", ","]
 
 # Abstract metaclass with py2/py3 support
-Abstract = ABCMeta('Abstract', (object,), {})
+Abstract = ABCMeta("Abstract", (object,), {})
 
 
 class DateFormatter(Abstract):
@@ -13,7 +13,7 @@ class DateFormatter(Abstract):
     Abstract date formatter class.
     """
 
-    def __init__(self, sep='-'):
+    def __init__(self, sep="-"):
         """
         Accepts separation character and initialize specified
         date formatter.
@@ -55,8 +55,8 @@ class BigEndianDateFormatter(DateFormatter):
         """
         date = datetime.date(year=year, month=1, day=1)
         if wildcard:
-            return date.strftime('%Y{sep}*'.format(sep=self._sep))
-        return date.strftime('%Y')
+            return date.strftime("%Y{sep}*".format(sep=self._sep))
+        return date.strftime("%Y")
 
     def fmt_month(self, year, month, wildcard=False):
         """
@@ -69,8 +69,8 @@ class BigEndianDateFormatter(DateFormatter):
         """
         date = datetime.date(year=year, month=month, day=1)
         if wildcard:
-            return date.strftime('%Y{sep}%m{sep}*'.format(sep=self._sep))
-        return date.strftime('%Y{sep}%m'.format(sep=self._sep))
+            return date.strftime("%Y{sep}%m{sep}*".format(sep=self._sep))
+        return date.strftime("%Y{sep}%m".format(sep=self._sep))
 
     def fmt_day(self, year, month, day):
         """
@@ -82,7 +82,7 @@ class BigEndianDateFormatter(DateFormatter):
         :rtype: str
         """
         date = datetime.date(year, month, day)
-        return date.strftime('%Y{sep}%m{sep}%d'.format(sep=self._sep))
+        return date.strftime("%Y{sep}%m{sep}%d".format(sep=self._sep))
 
 
 class LittleEndianDateFormatter(DateFormatter):
@@ -103,8 +103,8 @@ class LittleEndianDateFormatter(DateFormatter):
         """
         date = datetime.date(year=year, month=1, day=1)
         if wildcard:
-            return date.strftime('*{sep}%Y'.format(sep=self._sep))
-        return date.strftime('%Y'.format(sep=self._sep))
+            return date.strftime("*{sep}%Y".format(sep=self._sep))
+        return date.strftime("%Y".format(sep=self._sep))
 
     def fmt_month(self, year, month, wildcard=False):
         """
@@ -117,8 +117,8 @@ class LittleEndianDateFormatter(DateFormatter):
         """
         date = datetime.date(year=year, month=month, day=1)
         if wildcard:
-            return date.strftime('*{sep}%m{sep}%Y'.format(sep=self._sep))
-        return date.strftime('%m{sep}%Y'.format(sep=self._sep))
+            return date.strftime("*{sep}%m{sep}%Y".format(sep=self._sep))
+        return date.strftime("%m{sep}%Y".format(sep=self._sep))
 
     def fmt_day(self, year, month, day):
         """
@@ -130,7 +130,7 @@ class LittleEndianDateFormatter(DateFormatter):
         :rtype: str
         """
         date = datetime.date(year, month, day)
-        return date.strftime('%d{sep}%m{sep}%Y'.format(sep=self._sep))
+        return date.strftime("%d{sep}%m{sep}%Y".format(sep=self._sep))
 
 
 class MiddleEndianDateFormatter(DateFormatter):
@@ -150,8 +150,8 @@ class MiddleEndianDateFormatter(DateFormatter):
         """
         date = datetime.date(year=year, month=1, day=1)
         if wildcard:
-            return date.strftime('*{sep}%Y'.format(sep=self._sep))
-        return date.strftime('%Y')
+            return date.strftime("*{sep}%Y".format(sep=self._sep))
+        return date.strftime("%Y")
 
     def fmt_month(self, year, month, wildcard=False):
         """
@@ -164,8 +164,8 @@ class MiddleEndianDateFormatter(DateFormatter):
         """
         date = datetime.date(year=year, month=month, day=1)
         if wildcard:
-            return date.strftime('%m{sep}*{sep}%Y'.format(sep=self._sep))
-        return date.strftime('%m{sep}%Y'.format(sep=self._sep))
+            return date.strftime("%m{sep}*{sep}%Y".format(sep=self._sep))
+        return date.strftime("%m{sep}%Y".format(sep=self._sep))
 
     def fmt_day(self, year, month, day):
         """
@@ -177,4 +177,4 @@ class MiddleEndianDateFormatter(DateFormatter):
         :rtype: str
         """
         date = datetime.date(year, month, day)
-        return date.strftime('%m{sep}%d{sep}%Y'.format(sep=self._sep))
+        return date.strftime("%m{sep}%d{sep}%Y".format(sep=self._sep))
