@@ -156,6 +156,14 @@ search = Search(using=client, index=indexes) \
 response = search.execute()
 ```
 
+## Cython
+For an extra speed boost when deploying your application in production, Elasticsearch
+Partitioning can compile itself with Cython.
+```
+pip install cython
+pip install elasticsearch-partition
+```
+
 ## Changes
 A full changelog is maintained in the [CAHNGELOG](https://github.com/kandziu/elasticsearch-partition/blob/master/CHANGELOG.md) file.
 
