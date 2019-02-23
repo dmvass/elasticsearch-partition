@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.0.3] - 2019-02-23
+### Fixed
+- Package description content type
+
 ## [1.0.2] - 2019-02-23
 ### Added
 - Code style and linting tox environment

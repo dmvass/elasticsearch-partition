@@ -71,6 +71,7 @@ setuptools.setup(
     description="A Python library for creating Elasticsearch partitioned "
                 "indexes by date range",
     long_description=read("README.md"),
+    long_description_content_type="text/markdown",
     url="https://github.com/kandziu/elasticsearch-partition",
     packages=setuptools.find_packages(exclude=("tests")),
     classifiers=[
