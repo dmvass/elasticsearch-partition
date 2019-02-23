@@ -1,0 +1,4 @@
+[run]
+branch = True
+source = elasticsearch_partition
+omit = setup.py
