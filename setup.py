@@ -1,5 +1,6 @@
 import glob
 from os import path
+import re
 
 import setuptools
 
@@ -10,6 +11,29 @@ except ImportError:
     CYTHON = False
 
 BASE_DIR = path.abspath(path.dirname(__file__))
+
+
+def find_version(fname):
+    """Attempts to find the version number in the file names fname.
+    Raises RuntimeError if not found.
+    """
+    version = ""
+    with open(path.join(BASE_DIR, fname), "r") as fp:
+        regex = re.compile(r'__version__ = [\'"]([^\'"]*)[\'"]')
+        for line in fp:
+            m = regex.match(line)
+            if m:
+                version = m.group(1)
+                break
+    if not version:
+        raise RuntimeError("Cannot find version information")
+    return version
+
+
+def read(fname):
+    with open(path.join(BASE_DIR, fname), "r") as fh:
+        return fh.read()
+
 
 if CYTHON:
     def modules(dirname):
@@ -39,20 +63,16 @@ else:
     cmdclass = {}
 
 
-with open(path.join(path.dirname(__file__), "README.md"), "r") as fh:
-    long_description = fh.read()
-
-
 setuptools.setup(
     name="elasticsearch_partition",
-    version="1.0.1",
+    version=find_version("elasticsearch_partition/__init__.py"),
     author="Dmitri Vasilishin",
     author_email="vasilishin.d.o@gmail.com",
     description="A Python library for creating Elasticsearch partitioned "
                 "indexes by date range",
-    long_description=long_description,
+    long_description=read("README.md"),
     url="https://github.com/kandziu/elasticsearch-partition",
-    packages=setuptools.find_packages(exclude=("test*")),
+    packages=setuptools.find_packages(exclude=("tests")),
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
@@ -69,6 +89,7 @@ setuptools.setup(
     ],
     keywords=["elasticsearch", "partition", "partitioning"],
     tests_require=["coverage"],
+    extras_require={"dev": ["tox", "bumpversion"]},
     cmdclass=cmdclass,
     ext_modules=ext_modules
 )
