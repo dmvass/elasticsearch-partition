@@ -74,10 +74,10 @@ partition('logs-*', until=datetime.date(2018, 7, 10))
 
 ### How to customize partitioning
 If you want to change some `partition` bahavior you can do it ease with
-`RangePartitioning` and `formatters` module, also you can use your custom date
+`RangePartition` and `formatters` module, also you can use your custom date
 `now` functions.
 ```python
-from elasticsearch_partition import RangePartitioning
+from elasticsearch_partition import RangePartition
 from elasticsearch_partition.partitioning import MONTH
 from elasticsearch_partition.formatters import LittleEndianDateFormatter
 
@@ -85,7 +85,7 @@ from elasticsearch_partition.formatters import LittleEndianDateFormatter
 # formatter - Formatter instance
 # escape - Special character which will be replaced on a date
 # now_func - Get now date function
-my_partition = RangePartitioning(
+my_partition = RangePartition(
     frequency=MONTH,
     formatter=LittleEndianDateFormatter(sep='.'),
     escape='@',
@@ -115,7 +115,7 @@ class MyDateFormatter(DateFormatter):
         # This method not accept 'wildcard' parameter
 
 my_formatter = MyDateFormatter()
-partition = RangePartitioning(formatter=my_formatter)
+partition = RangePartition(formatter=my_formatter)
 ```
 
 ### How to use with [elasticsearch-py](https://github.com/elastic/elasticsearch-py)

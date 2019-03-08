@@ -1,19 +1,19 @@
-from abc import ABCMeta, abstractmethod
-import datetime
+# cython: c_string_type=str, c_string_encoding=ascii
+
+from libc.stdio cimport sprintf
 
 
-INVALID_SEP_CHARS = ["\\", "/", "*", "?", "\"", "<", ">", "|", " ", ","]
+DEF MAX_DATE_LENGTH = 11
 
-# Abstract metaclass with py2/py3 support
-Abstract = ABCMeta("Abstract", (object,), {})
+INVALID_SEP_CHARS = ("\\", "/", "*", "?", "\"", "<", ">", "|", " ", ",")
 
 
-class DateFormatter(Abstract):
+cdef class DateFormatter:
     """
     Abstract date formatter class.
     """
 
-    def __init__(self, sep="-"):
+    def __init__(self, str sep="-"):
         """
         Accepts separation character and initialize specified
         date formatter.
@@ -22,22 +22,20 @@ class DateFormatter(Abstract):
             raise ValueError(
                 "The separation character '%s' is not valid" % sep
             )
-        self._sep = sep
+        self.sep = sep
+        self.c_sep = <char> ord(sep)
 
-    @abstractmethod
-    def fmt_year(self, year, wildcard=False):
+    cpdef str fmt_year(self, int year, bint wildcard):
         pass
 
-    @abstractmethod
-    def fmt_month(self, year, month, wildcard=False):
+    cpdef str fmt_month(self, int year, int month, bint wildcard):
         pass
 
-    @abstractmethod
-    def fmt_day(self, year, month, day):
+    cpdef str fmt_day(self, int year, int month, int day):
         pass
 
 
-class BigEndianDateFormatter(DateFormatter):
+cdef class BigEndianDateFormatter(DateFormatter):
     """
     In this format the most significant data item is written before
     lesser data items i.e. year before month before day.
@@ -45,7 +43,7 @@ class BigEndianDateFormatter(DateFormatter):
     (year, month, day), e.g. 2018-04-22 or 2018.04.22 or 2018/04/22
     """
 
-    def fmt_year(self, year, wildcard=False):
+    cpdef str fmt_year(self, int year, bint wildcard):
         """
         Format and returns year in big-endian order style.
 
@@ -53,12 +51,16 @@ class BigEndianDateFormatter(DateFormatter):
         :param bool wildcard: Use wildcard instead day and month
         :rtype: str
         """
-        date = datetime.date(year=year, month=1, day=1)
-        if wildcard:
-            return date.strftime("%Y{sep}*".format(sep=self._sep))
-        return date.strftime("%Y")
+        cdef char date[MAX_DATE_LENGTH]
 
-    def fmt_month(self, year, month, wildcard=False):
+        if wildcard:
+            sprintf(date, "%d%c*", year, self.c_sep)
+        else:
+            sprintf(date, "%d", year, self.c_sep)
+
+        return date
+
+    cpdef str fmt_month(self, int year, int month, bint wildcard):
         """
         Format and returns month in big-endian order style.
 
@@ -67,12 +69,16 @@ class BigEndianDateFormatter(DateFormatter):
         :param bool wildcard: Use wildcard instead day
         :rtype: str
         """
-        date = datetime.date(year=year, month=month, day=1)
-        if wildcard:
-            return date.strftime("%Y{sep}%m{sep}*".format(sep=self._sep))
-        return date.strftime("%Y{sep}%m".format(sep=self._sep))
+        cdef char date[MAX_DATE_LENGTH]
 
-    def fmt_day(self, year, month, day):
+        if wildcard:
+            sprintf(date, "%d%c%02d%c*", year, self.c_sep, month, self.c_sep)
+        else:
+            sprintf(date, "%d%c%02d", year, self.c_sep, month)
+        
+        return date
+
+    cpdef str fmt_day(self, int year, int month, int day):
         """
         Format and returns day in big-endian order style.
 
@@ -81,11 +87,14 @@ class BigEndianDateFormatter(DateFormatter):
         :param int day: Day
         :rtype: str
         """
-        date = datetime.date(year, month, day)
-        return date.strftime("%Y{sep}%m{sep}%d".format(sep=self._sep))
+        cdef char date[MAX_DATE_LENGTH]
+
+        sprintf(date, "%d%c%02d%c%02d", year, self.c_sep,
+                month, self.c_sep, day)
+        return date
 
 
-class LittleEndianDateFormatter(DateFormatter):
+cdef class LittleEndianDateFormatter(DateFormatter):
     """
     In this format the most significant data item is written after
     lesser data items i.e. day before month before year.
@@ -93,7 +102,7 @@ class LittleEndianDateFormatter(DateFormatter):
     (day, month, year), e.g. 22-04-2018 or 22.04.2018 or 22/04/2018
     """
 
-    def fmt_year(self, year, wildcard=False):
+    cpdef str fmt_year(self, int year, bint wildcard):
         """
         Format and returns year in little-endian order style.
 
@@ -101,12 +110,16 @@ class LittleEndianDateFormatter(DateFormatter):
         :param bool wildcard: Use wildcard instead day and month
         :rtype: str
         """
-        date = datetime.date(year=year, month=1, day=1)
-        if wildcard:
-            return date.strftime("*{sep}%Y".format(sep=self._sep))
-        return date.strftime("%Y".format(sep=self._sep))
+        cdef char date[MAX_DATE_LENGTH]
 
-    def fmt_month(self, year, month, wildcard=False):
+        if wildcard:
+            sprintf(date, "*%c%d", self.c_sep, year)
+        else:
+            sprintf(date, "%d", year, self.c_sep)
+
+        return date
+
+    cpdef str fmt_month(self, int year, int month, bint wildcard):
         """
         Format and returns month in little-endian order style.
 
@@ -115,12 +128,16 @@ class LittleEndianDateFormatter(DateFormatter):
         :param bool wildcard: Use wildcard instead day
         :rtype: str
         """
-        date = datetime.date(year=year, month=month, day=1)
-        if wildcard:
-            return date.strftime("*{sep}%m{sep}%Y".format(sep=self._sep))
-        return date.strftime("%m{sep}%Y".format(sep=self._sep))
+        cdef char date[MAX_DATE_LENGTH]
 
-    def fmt_day(self, year, month, day):
+        if wildcard:
+            sprintf(date, "*%c%02d%c%d", self.c_sep, month, self.c_sep, year)
+        else:
+            sprintf(date, "%02d%c%d", month, self.c_sep, year)
+        
+        return date
+
+    cpdef str fmt_day(self, int year, int month, int day):
         """
         Format and returns day in little-endian order style.
 
@@ -129,18 +146,20 @@ class LittleEndianDateFormatter(DateFormatter):
         :param int day: Day
         :rtype: str
         """
-        date = datetime.date(year, month, day)
-        return date.strftime("%d{sep}%m{sep}%Y".format(sep=self._sep))
+        cdef char date[MAX_DATE_LENGTH]
 
+        sprintf(date, "%02d%c%02d%c%d", day, self.c_sep,
+                month, self.c_sep, year)
+        return date
 
-class MiddleEndianDateFormatter(DateFormatter):
+cdef class MiddleEndianDateFormatter(DateFormatter):
     """
     In this format the month data item is written before day before year.
 
     (month, day, year), e.g. 04-22-2018 or 04.22.2018 or 04/22/2018
     """
 
-    def fmt_year(self, year, wildcard=False):
+    cpdef str fmt_year(self, int year, bint wildcard):
         """
         Format and returns year in middle-endian order style.
 
@@ -148,12 +167,16 @@ class MiddleEndianDateFormatter(DateFormatter):
         :param bool wildcard: Use wildcard instead day and month
         :rtype: str
         """
-        date = datetime.date(year=year, month=1, day=1)
-        if wildcard:
-            return date.strftime("*{sep}%Y".format(sep=self._sep))
-        return date.strftime("%Y")
+        cdef char date[MAX_DATE_LENGTH]
 
-    def fmt_month(self, year, month, wildcard=False):
+        if wildcard:
+            sprintf(date, "*%c%d", self.c_sep, year)
+        else:
+            sprintf(date, "%d", year, self.c_sep)
+
+        return date
+
+    cpdef str fmt_month(self, int year, int month, bint wildcard):
         """
         Format and returns month in middle-endian order style.
 
@@ -162,12 +185,16 @@ class MiddleEndianDateFormatter(DateFormatter):
         :param bool wildcard: Use wildcard instead day
         :rtype: str
         """
-        date = datetime.date(year=year, month=month, day=1)
-        if wildcard:
-            return date.strftime("%m{sep}*{sep}%Y".format(sep=self._sep))
-        return date.strftime("%m{sep}%Y".format(sep=self._sep))
+        cdef char date[MAX_DATE_LENGTH]
 
-    def fmt_day(self, year, month, day):
+        if wildcard:
+            sprintf(date, "%02d%c*%c%d", month, self.c_sep, self.c_sep, year)
+        else:
+            sprintf(date, "%02d%c%d", month, self.c_sep, year)
+        
+        return date
+
+    cpdef str fmt_day(self, int year, int month, int day):
         """
         Format and returns day in middle-endian order style.
 
@@ -176,5 +203,8 @@ class MiddleEndianDateFormatter(DateFormatter):
         :param int day: Day
         :rtype: str
         """
-        date = datetime.date(year, month, day)
-        return date.strftime("%m{sep}%d{sep}%Y".format(sep=self._sep))
+        cdef char date[MAX_DATE_LENGTH]
+
+        sprintf(date, "%02d%c%02d%c%d", month, self.c_sep,
+                day, self.c_sep, year)
+        return date
