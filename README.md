@@ -1,16 +1,10 @@
-# Elasticsearch Partitioning
+# Elasticsearch Partition
 [![image](https://img.shields.io/pypi/v/elasticsearch-partition.svg)](https://pypi.python.org/pypi/elasticsearch-partition)
-[![Build Status](https://travis-ci.com/kandziu/elasticsearch-partition.svg?branch=master)](https://travis-ci.com/kandziu/elasticsearch-partition)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/kandziu/elasticsearch-partition/blob/master/LICENSE)
-[![codecov](https://codecov.io/gh/kandziu/elasticsearch-partition/branch/master/graph/badge.svg)](https://codecov.io/gh/kandziu/elasticsearch-partition)
+[![Build Status](https://travis-ci.com/dmvass/elasticsearch-partition.svg?branch=master)](https://travis-ci.com/kandziu/elasticsearch-partition)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/dmvass/elasticsearch-partition/blob/master/LICENSE)
 
-A Python library for creating indexes by date range and fetching data from
-partitioned indexes. This can be achieved with the Elasticsearch Multiple
-Indeces API because most Elasticsearch APIs that refer to an index parameter
-support execution across multiple indices, using simple `test1,test2,test3`
-notation (or _all for all indices). It also support wildcards, for example:
-test*, `*test`, `te*t` or `*test*`, and the ability to "exclude" (-), for
-example: test*,-test3.
+A Python library is written on Cython for creating Elasticsearch indexes by
+date range.
 
 For time oriented data, such as logs, a common strategy is to partition data
 into indexes that hold data for a certain time range. For example, the index
@@ -19,20 +13,6 @@ a time range of a day. You can of course choose bigger or smaller time ranges
 as well(`year`, `month` or `day` frequencies), depending on your needs. Using
 index templates, you can easily manage settings and mappings for any index
 created with a name starting with e.g. `logstash-*`.
-
-When the day is over, nothing new will be written to its corresponding index.
-Such indexes can be fully optimized to be as compact as possible, and possibly
-moved somewhere for archiving purposes. When the data becomes too old to be of
-interest, the data can easily be deleted by deleting the entire index for the
-obsolete time ranges.
-
-Searches can be run on just the relevant indexes for a selected time span. If
-you are searching for something that happened on `2018-01-01`, there's no point
-in searching any other index than that for `2018-01-01`.
-
-Using this technique and `elasticsear-partition` module you can easy implemet
-`Range Partitionnig` approach for your Elasticsearch queries. Some of this
-examples we will consider below.
 
 ## Installation
 Install the elasticsearch partition package with pip:
@@ -70,14 +50,14 @@ partition('logs-*', until=datetime.date(2018, 7, 10))
 # '-logs-2018-07-16', '-logs-2018-07-17', 'logs-*']
 ```
 
-> Note: If `until` more then current date you can get an error.
+> Note: If `until` more then current date you will get an error.
 
 ### How to customize partitioning
 If you want to change some `partition` bahavior you can do it ease with
-`RangePartitioning` and `formatters` module, also you can use your custom date
+`RangePartition` and `formatters` module, also you can use your custom date
 `now` functions.
 ```python
-from elasticsearch_partition import RangePartitioning
+from elasticsearch_partition import RangePartition
 from elasticsearch_partition.partitioning import MONTH
 from elasticsearch_partition.formatters import LittleEndianDateFormatter
 
@@ -85,7 +65,7 @@ from elasticsearch_partition.formatters import LittleEndianDateFormatter
 # formatter - Formatter instance
 # escape - Special character which will be replaced on a date
 # now_func - Get now date function
-my_partition = RangePartitioning(
+my_partition = RangePartition(
     frequency=MONTH,
     formatter=LittleEndianDateFormatter(sep='.'),
     escape='@',
@@ -104,18 +84,16 @@ with specified wildcard character. For example `2018-04` will be replced on
 `2018-04-*`, `2018` on `2018-*` etc.
 ```python
 class MyDateFormatter(DateFormatter):
-    def fmt_year(self, year, wildcard=False):
+    def fmt_year(self, year, wildcard):
         # Should be implemented
 
-    def fmt_month(self, year, month, wildcard=False):
+    def fmt_month(self, year, month, wildcard):
         # Should be implemented
     
     def fmt_day(self, year, month, day):
         # Should be implemented
-        # This method not accept 'wildcard' parameter
 
-my_formatter = MyDateFormatter()
-partition = RangePartitioning(formatter=my_formatter)
+partition = RangePartition(formatter=MyDateFormatter())
 ```
 
 ### How to use with [elasticsearch-py](https://github.com/elastic/elasticsearch-py)
@@ -156,19 +134,11 @@ search = Search(using=client, index=indexes) \
 response = search.execute()
 ```
 
-## Cython
-For an extra speed boost when deploying your application in production, Elasticsearch
-Partitioning can compile itself with Cython.
-```
-pip install cython
-pip install elasticsearch-partition
-```
-
 ## Changes
-A full changelog is maintained in the [CAHNGELOG](https://github.com/kandziu/elasticsearch-partition/blob/master/CHANGELOG.md) file.
+A full changelog is maintained in the [CAHNGELOG](https://github.com/dmvass/elasticsearch-partition/blob/master/CHANGELOG.md) file.
 
 ## Contributing 
 **elasticsearch-partition** is an open source project and contributions are
-welcome! Check out the [Issues](https://github.com/kandziu/elasticsearch-partition/issues)
+welcome! Check out the [Issues](https://github.com/dmvass/elasticsearch-partition/issues)
 page to see if your idea for a contribution has already been mentioned, and feel
 free to raise an issue or submit a pull request.

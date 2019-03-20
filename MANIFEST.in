@@ -1,0 +1,3 @@
+# Include the Cython files
+include elasticsearch_partition/*.pyx
+include elasticsearch_partition/*.pxd

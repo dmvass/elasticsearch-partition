@@ -11,7 +11,7 @@ class TestBigEndianDateFormatter(unittest.TestCase):
 
     def test_fmt_year(self):
         # Test without wildcard
-        actual = self.formatter.fmt_year(2018)
+        actual = self.formatter.fmt_year(2018, wildcard=False)
         self.assertEqual(actual, "2018")
         # Test with wildcard
         actual = self.formatter.fmt_year(2018, wildcard=True)
@@ -19,7 +19,7 @@ class TestBigEndianDateFormatter(unittest.TestCase):
 
     def test_fmt_month(self):
         # Test without wildcard
-        actual = self.formatter.fmt_month(2018, 4)
+        actual = self.formatter.fmt_month(2018, 4, wildcard=False)
         self.assertEqual(actual, "2018-04")
         # Test with wildcard
         actual = self.formatter.fmt_month(2018, 4, wildcard=True)
@@ -31,8 +31,8 @@ class TestBigEndianDateFormatter(unittest.TestCase):
 
     def test_sep(self):
         formatter = self.module(sep=".")
-        actual_year = formatter.fmt_year(2018)
-        actual_month = formatter.fmt_month(2018, 4)
+        actual_year = formatter.fmt_year(2018, wildcard=False)
+        actual_month = formatter.fmt_month(2018, 4, wildcard=False)
         actual_day = formatter.fmt_day(2018, 4, 20)
         self.assertEqual(actual_year, "2018")
         self.assertEqual(actual_month, "2018.04")
@@ -51,7 +51,7 @@ class TestLittleEndianDateFormatter(unittest.TestCase):
 
     def test_fmt_year(self):
         # Test without wildcard
-        actual = self.formatter.fmt_year(2018)
+        actual = self.formatter.fmt_year(2018, wildcard=False)
         self.assertEqual(actual, "2018")
         # Test with wildcard
         actual = self.formatter.fmt_year(2018, wildcard=True)
@@ -59,7 +59,7 @@ class TestLittleEndianDateFormatter(unittest.TestCase):
 
     def test_fmt_month(self):
         # Test without wildcard
-        actual = self.formatter.fmt_month(2018, 4)
+        actual = self.formatter.fmt_month(2018, 4, wildcard=False)
         self.assertEqual(actual, "04-2018")
         # Test with wildcard
         actual = self.formatter.fmt_month(2018, 4, wildcard=True)
@@ -71,8 +71,8 @@ class TestLittleEndianDateFormatter(unittest.TestCase):
 
     def test_sep(self):
         formatter = self.module(sep=".")
-        actual_year = formatter.fmt_year(2018)
-        actual_month = formatter.fmt_month(2018, 4)
+        actual_year = formatter.fmt_year(2018, wildcard=False)
+        actual_month = formatter.fmt_month(2018, 4, wildcard=False)
         actual_day = formatter.fmt_day(2018, 4, 20)
         self.assertEqual(actual_year, "2018")
         self.assertEqual(actual_month, "04.2018")
@@ -91,7 +91,7 @@ class TestMiddleEndianDateFormatter(unittest.TestCase):
 
     def test_fmt_year(self):
         # Test without wildcard
-        actual = self.formatter.fmt_year(2018)
+        actual = self.formatter.fmt_year(2018, wildcard=False)
         self.assertEqual(actual, "2018")
         # Test with wildcard
         actual = self.formatter.fmt_year(2018, wildcard=True)
@@ -99,7 +99,7 @@ class TestMiddleEndianDateFormatter(unittest.TestCase):
 
     def test_fmt_month(self):
         # Test without wildcard
-        actual = self.formatter.fmt_month(2018, 4)
+        actual = self.formatter.fmt_month(2018, 4, wildcard=False)
         self.assertEqual(actual, "04-2018")
         # Test with wildcard
         actual = self.formatter.fmt_month(2018, 4, wildcard=True)
@@ -111,8 +111,8 @@ class TestMiddleEndianDateFormatter(unittest.TestCase):
 
     def test_sep(self):
         formatter = self.module(sep=".")
-        actual_year = formatter.fmt_year(2018)
-        actual_month = formatter.fmt_month(2018, 4)
+        actual_year = formatter.fmt_year(2018, wildcard=False)
+        actual_month = formatter.fmt_month(2018, 4, wildcard=False)
         actual_day = formatter.fmt_day(2018, 4, 20)
         self.assertEqual(actual_year, "2018")
         self.assertEqual(actual_month, "04.2018")
