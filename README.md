@@ -1,8 +1,7 @@
 # Elasticsearch Partitioning
 [![image](https://img.shields.io/pypi/v/elasticsearch-partition.svg)](https://pypi.python.org/pypi/elasticsearch-partition)
-[![Build Status](https://travis-ci.com/kandziu/elasticsearch-partition.svg?branch=master)](https://travis-ci.com/kandziu/elasticsearch-partition)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/kandziu/elasticsearch-partition/blob/master/LICENSE)
-[![codecov](https://codecov.io/gh/kandziu/elasticsearch-partition/branch/master/graph/badge.svg)](https://codecov.io/gh/kandziu/elasticsearch-partition)
+[![Build Status](https://travis-ci.com/dmvass/elasticsearch-partition.svg?branch=master)](https://travis-ci.com/kandziu/elasticsearch-partition)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/dmvass/elasticsearch-partition/blob/master/LICENSE)
 
 A Python library for creating indexes by date range and fetching data from
 partitioned indexes. This can be achieved with the Elasticsearch Multiple
@@ -165,10 +164,10 @@ pip install elasticsearch-partition
 ```
 
 ## Changes
-A full changelog is maintained in the [CAHNGELOG](https://github.com/kandziu/elasticsearch-partition/blob/master/CHANGELOG.md) file.
+A full changelog is maintained in the [CAHNGELOG](https://github.com/dmvass/elasticsearch-partition/blob/master/CHANGELOG.md) file.
 
 ## Contributing 
 **elasticsearch-partition** is an open source project and contributions are
-welcome! Check out the [Issues](https://github.com/kandziu/elasticsearch-partition/issues)
+welcome! Check out the [Issues](https://github.com/dmvass/elasticsearch-partition/issues)
 page to see if your idea for a contribution has already been mentioned, and feel
 free to raise an issue or submit a pull request.

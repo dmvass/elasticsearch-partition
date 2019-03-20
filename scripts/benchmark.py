@@ -28,7 +28,7 @@ def sample(name, number=100000, **kwargs):
     print("{0}\n{1}\n".format("-" * (len(report)), report))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sample("a", since=date(1970, 7, 10), until=date(2018, 8, 26))
     sample("b", since=date(2001, 2, 25), until=date(2018, 5, 3))
     sample("c", since=date(2012, 8, 15), until=date(2018, 3, 20))

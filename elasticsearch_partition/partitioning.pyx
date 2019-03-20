@@ -73,7 +73,7 @@ cdef class RangePartition:
             fmt_date = self.formatter.fmt_year(date.year, wildcard=True)
 
         return fmt_date
-    
+
     cdef str fmt_day(self, TimeWindow tw, date_t *date):
         cdef str fmt_date
 
@@ -111,7 +111,7 @@ cdef class RangePartition:
             int idx
             date_t date
 
-        # Defines the frequency formatting function 
+        # Defines the frequency formatting function
         if self.frequency == FREQUENCY.YEAR:
             func_ptr = self.fmt_year
         elif self.frequency == FREQUENCY.MONTH:
@@ -135,7 +135,7 @@ cdef class RangePartition:
         :param str pattern: Index name with a special character
         :param datetime since: Since partitioning date
         :param datetime until: Until partitioning date
-    
+
         """
         if self.escape not in pattern:
             raise ValueError("Index pattern '%s' doesn't contain a special "

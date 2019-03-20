@@ -5,14 +5,8 @@ matrix:
     include:
         - python: 3.7
           env: TOXENV=pep8
-        - python: pypy2.7-6.0
-          env: TOXENV=pypy
-        - python: pypy3.5-6.0
-          env: TOXENV=pypy3
         - python: 2.7
           env: TOXENV=py27
-        - python: 2.7
-          env: TOXENV=py27_cython
         - python: 3.4
           env: TOXENV=py3.4
         - python: 3.5
@@ -21,10 +15,6 @@ matrix:
           env: TOXENV=py3.6
         - python: 3.7
           env: TOXENV=py3.7
-        - python: 3.7
-          env: TOXENV=py3.7_cython
 
-install: pip install tox codecov
+install: pip install tox
 script: tox
-after_success:
-  - codecov

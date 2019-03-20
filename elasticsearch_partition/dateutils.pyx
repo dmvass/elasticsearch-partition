@@ -1,7 +1,7 @@
 import datetime
+from libc.stdlib cimport malloc, free
 
 cimport cython
-from libc.stdlib cimport malloc, free
 
 
 DEF MAXMONTH = 12
@@ -26,21 +26,21 @@ cdef int monthrange(int year, int month) except -1:
 
 
 cdef int compare_date(date_t *date1, date_t *date2):
-    cdef int res;
- 
+    cdef int res
+
     # Perform comparison
     if date1.year < date2.year:
-       res = -1
+        res = -1
     elif date1.year > date2.year:
-       res = 1
+        res = 1
     elif date1.month < date2.month:
-       res = -1
+        res = -1
     elif date1.month > date2.month:
-       res = 1
+        res = 1
     elif date1.day < date2.day:
-       res = -1
+        res = -1
     elif date1.day > date2.day:
-       res = 1
+        res = 1
     else:
         res = 0
 
@@ -106,9 +106,9 @@ cdef class TimeWindow:
 
     cdef void calculate(self, int frequency):
         cdef date_t date = self.since
-        cdef void (*func_ptr)(TimeWindow, date_t *) 
+        cdef void (*func_ptr)(TimeWindow, date_t *)
 
-        # Defines the frequency calculate function 
+        # Defines the frequency calculate function
         if frequency == FREQUENCY.YEAR:
             func_ptr = self.calculate_yearly
         elif frequency == FREQUENCY.MONTH:
@@ -125,6 +125,6 @@ cdef class TimeWindow:
     def __dealloc__(self):
         """Frees the array. This is called by Python when all the
         references to the object are gone.
-    
+
         """
         free(self.data_ptr)

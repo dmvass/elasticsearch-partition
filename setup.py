@@ -2,7 +2,7 @@ import os
 import re
 
 import setuptools
-from Cython.Build import cythonize
+from Cython.Build import cythonize  # NOQA
 
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -41,6 +41,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/dmvass/elasticsearch-partition",
     packages=setuptools.find_packages(exclude=("tests", "scripts")),
+    include_package_data=True,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
@@ -55,11 +56,8 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    keywords=["elasticsearch", "partition", "partitioning"],
-    tests_require=["coverage"],
+    keywords=["elasticsearch", "partition", "cython", "bigdata"],
+    install_requires=["cython"],
     extras_require={"dev": ["tox", "bumpversion"]},
-    ext_modules=cythonize(
-        ["elasticsearch_partition/*.pyx"],
-        compiler_directives={'linetrace': True}
-    )
+    ext_modules=cythonize(["elasticsearch_partition/*.pyx"])
 )

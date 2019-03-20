@@ -195,6 +195,16 @@ class TestRangePartition(unittest.TestCase):
         actual = partition("logs-*", self.since, self.until)
         self.assertListEqual(actual, expected)
 
+    def test_partition_by_same_year(self):
+        partition = self.cls(frequency=partitioning.YEAR)
+        expected = ["logs-2018"]
+        actual = partition(
+            "logs-*",
+            datetime.date(2018, 7, 4),
+            datetime.date(2018, 8, 9)
+        )
+        self.assertListEqual(actual, expected)
+
     def test_partition_by_year_only_since(self):
         partition = self.cls(
             frequency=partitioning.YEAR,
@@ -219,7 +229,7 @@ class TestRangePartition(unittest.TestCase):
         actual = partition("logs-*", until=self.until)
         self.assertListEqual(actual, expected)
 
-    def test_custom_partition(self):
+    def test_partition_with_custom_formatter(self):
         partition = self.cls(
             frequency=partitioning.DAY,
             formatter=formatters.MiddleEndianDateFormatter(),
@@ -245,7 +255,7 @@ class TestRangePartition(unittest.TestCase):
         actual = partition("logs-@", self.since, self.until)
         self.assertListEqual(actual, expected)
 
-    def test_partition_with_py_formatter(self):
+    def test_partition_with_custom_py_formatter(self):
         partition = self.cls(
             frequency=partitioning.DAY,
             formatter=_PyDateFormatter(),
@@ -269,6 +279,27 @@ class TestRangePartition(unittest.TestCase):
         ]
         actual = partition("logs-*", self.since, self.until)
         self.assertListEqual(actual, expected)
+
+    def test_partition_with_wrong_pattern(self):
+        partition = self.cls(escape="@")
+        with self.assertRaises(ValueError) as ctx:
+            partition("logs-*")
+
+        self.assertEqual(
+            "Index pattern 'logs-*' doesn't contain a special character '@'",
+            str(ctx.exception)
+        )
+
+    def test_partition_without_tw_parameters(self):
+        partition = self.cls()
+        with self.assertRaises(ValueError) as ctx:
+            partition("logs-*")
+
+        self.assertEqual(
+            "You should use 'since' or 'until' for searching by "
+            "partitioning index",
+            str(ctx.exception)
+        )
 
 
 if __name__ == "__main__":

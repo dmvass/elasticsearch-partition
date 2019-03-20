@@ -75,7 +75,7 @@ cdef class BigEndianDateFormatter(DateFormatter):
             sprintf(date, "%d%c%02d%c*", year, self.c_sep, month, self.c_sep)
         else:
             sprintf(date, "%d%c%02d", year, self.c_sep, month)
-        
+
         return date
 
     cpdef str fmt_day(self, int year, int month, int day):
@@ -134,7 +134,7 @@ cdef class LittleEndianDateFormatter(DateFormatter):
             sprintf(date, "*%c%02d%c%d", self.c_sep, month, self.c_sep, year)
         else:
             sprintf(date, "%02d%c%d", month, self.c_sep, year)
-        
+
         return date
 
     cpdef str fmt_day(self, int year, int month, int day):
@@ -191,7 +191,7 @@ cdef class MiddleEndianDateFormatter(DateFormatter):
             sprintf(date, "%02d%c*%c%d", month, self.c_sep, self.c_sep, year)
         else:
             sprintf(date, "%02d%c%d", month, self.c_sep, year)
-        
+
         return date
 
     cpdef str fmt_day(self, int year, int month, int day):
