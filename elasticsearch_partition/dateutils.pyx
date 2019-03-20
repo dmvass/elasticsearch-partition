@@ -16,7 +16,7 @@ cdef int *month_days = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 @cython.cdivision(True)
 cdef int monthrange(int year, int month) except -1:
     """Returns number of days (28-31) for year, month."""
-    cdef bint isleap
+    cdef int isleap
 
     if not 1 <= month <= MAXMONTH:
         return -1
@@ -48,7 +48,7 @@ cdef int compare_date(date_t *date1, date_t *date2):
 
 
 cdef class TimeWindow:
-    """Custom data container for allocating memory and calculating time
+    """Custom data container for memory allocation and calculation time
     window dates with the specified frequency. Allocated memory will be
     free when all Python references to the object are gone.
 

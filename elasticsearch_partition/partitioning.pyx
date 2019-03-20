@@ -20,7 +20,7 @@ def _now_func():
 
 
 cdef class RangePartition:
-    """This class implements a callable interface for create range
+    """This class implements a callable interface for creating range
     partition indexes by date with specified frequency.
 
     :attr int frequency: index partitioning frequency
@@ -91,7 +91,7 @@ cdef class RangePartition:
         date with specified frequency.
 
         :param str pattern: index name with a special character
-        :param TimeWindow time_window: time window instance
+        :param TimeWindow tw: time window instance
         :rtype: list
 
         """
