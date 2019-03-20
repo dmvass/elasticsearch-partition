@@ -48,6 +48,11 @@ cdef int compare_date(date_t *date1, date_t *date2):
 
 
 cdef class TimeWindow:
+    """Custom data container for allocating memory and calculating time
+    window dates with the specified frequency. Allocated memory will be
+    free when all Python references to the object are gone.
+
+    """
 
     def __cinit__(self, since, until):
         if not isinstance(since, datetime.date):
@@ -105,6 +110,8 @@ cdef class TimeWindow:
             self.incr_year(date)
 
     cdef void calculate(self, int frequency):
+        """Calculate dates with specified frequency."""
+
         cdef date_t date = self.since
         cdef void (*func_ptr)(TimeWindow, date_t *)
 
@@ -123,7 +130,7 @@ cdef class TimeWindow:
             func_ptr(self, &date)
 
     def __dealloc__(self):
-        """Frees the array. This is called by Python when all the
+        """Frees the array. This is called by Python when all
         references to the object are gone.
 
         """

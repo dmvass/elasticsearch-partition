@@ -9,14 +9,12 @@ INVALID_SEP_CHARS = ("\\", "/", "*", "?", "\"", "<", ">", "|", " ", ",")
 
 
 cdef class DateFormatter:
-    """
-    Abstract date formatter class.
-    """
+    """Abstract date formatter class"""
 
     def __init__(self, str sep="-"):
-        """
-        Accepts separation character and initialize specified
+        """Accepts separation character and initialize specified
         date formatter.
+
         """
         if sep in INVALID_SEP_CHARS:
             raise ValueError(
@@ -26,31 +24,47 @@ cdef class DateFormatter:
         self.c_sep = <char> ord(sep)
 
     cpdef str fmt_year(self, int year, bint wildcard):
+        """Format and returns year in specified order style.
+
+        :param int year: year value
+        :param bool wildcard: use wildcard instead day and month
+        :rtype: str
+
+        """
         pass
 
     cpdef str fmt_month(self, int year, int month, bint wildcard):
+        """Format and returns month in specified order style.
+
+        :param int year: year value
+        :param int month: month value
+        :param bool wildcard: use wildcard instead day
+        :rtype: str
+
+        """
         pass
 
     cpdef str fmt_day(self, int year, int month, int day):
+        """Format and returns day in specified order style.
+
+        :param int year: year value
+        :param int month: month value
+        :param int day: day value
+        :rtype: str
+
+        """
         pass
 
 
 cdef class BigEndianDateFormatter(DateFormatter):
-    """
-    In this format the most significant data item is written before
+    """In this format the most significant data item is written before
     lesser data items i.e. year before month before day.
 
     (year, month, day), e.g. 2018-04-22 or 2018.04.22 or 2018/04/22
+
     """
 
     cpdef str fmt_year(self, int year, bint wildcard):
-        """
-        Format and returns year in big-endian order style.
-
-        :param int year: Year
-        :param bool wildcard: Use wildcard instead day and month
-        :rtype: str
-        """
         cdef char date[MAX_DATE_LENGTH]
 
         if wildcard:
@@ -61,14 +75,6 @@ cdef class BigEndianDateFormatter(DateFormatter):
         return date
 
     cpdef str fmt_month(self, int year, int month, bint wildcard):
-        """
-        Format and returns month in big-endian order style.
-
-        :param int year: Year
-        :param int month: Month
-        :param bool wildcard: Use wildcard instead day
-        :rtype: str
-        """
         cdef char date[MAX_DATE_LENGTH]
 
         if wildcard:
@@ -79,14 +85,6 @@ cdef class BigEndianDateFormatter(DateFormatter):
         return date
 
     cpdef str fmt_day(self, int year, int month, int day):
-        """
-        Format and returns day in big-endian order style.
-
-        :param int year: Year
-        :param int month: Month
-        :param int day: Day
-        :rtype: str
-        """
         cdef char date[MAX_DATE_LENGTH]
 
         sprintf(date, "%d%c%02d%c%02d", year, self.c_sep,
@@ -95,21 +93,14 @@ cdef class BigEndianDateFormatter(DateFormatter):
 
 
 cdef class LittleEndianDateFormatter(DateFormatter):
-    """
-    In this format the most significant data item is written after
+    """In this format the most significant data item is written after
     lesser data items i.e. day before month before year.
 
     (day, month, year), e.g. 22-04-2018 or 22.04.2018 or 22/04/2018
+
     """
 
     cpdef str fmt_year(self, int year, bint wildcard):
-        """
-        Format and returns year in little-endian order style.
-
-        :param int year: Year
-        :param bool wildcard: Use wildcard instead day and month
-        :rtype: str
-        """
         cdef char date[MAX_DATE_LENGTH]
 
         if wildcard:
@@ -120,14 +111,6 @@ cdef class LittleEndianDateFormatter(DateFormatter):
         return date
 
     cpdef str fmt_month(self, int year, int month, bint wildcard):
-        """
-        Format and returns month in little-endian order style.
-
-        :param int year: Year
-        :param int month: Month
-        :param bool wildcard: Use wildcard instead day
-        :rtype: str
-        """
         cdef char date[MAX_DATE_LENGTH]
 
         if wildcard:
@@ -138,35 +121,21 @@ cdef class LittleEndianDateFormatter(DateFormatter):
         return date
 
     cpdef str fmt_day(self, int year, int month, int day):
-        """
-        Format and returns day in little-endian order style.
-
-        :param int year: Year
-        :param int month: Month
-        :param int day: Day
-        :rtype: str
-        """
         cdef char date[MAX_DATE_LENGTH]
 
         sprintf(date, "%02d%c%02d%c%d", day, self.c_sep,
                 month, self.c_sep, year)
         return date
 
+
 cdef class MiddleEndianDateFormatter(DateFormatter):
-    """
-    In this format the month data item is written before day before year.
+    """In this format the month data item is written before day before year.
 
     (month, day, year), e.g. 04-22-2018 or 04.22.2018 or 04/22/2018
+
     """
 
     cpdef str fmt_year(self, int year, bint wildcard):
-        """
-        Format and returns year in middle-endian order style.
-
-        :param int year: Year
-        :param bool wildcard: Use wildcard instead day and month
-        :rtype: str
-        """
         cdef char date[MAX_DATE_LENGTH]
 
         if wildcard:
@@ -177,14 +146,6 @@ cdef class MiddleEndianDateFormatter(DateFormatter):
         return date
 
     cpdef str fmt_month(self, int year, int month, bint wildcard):
-        """
-        Format and returns month in middle-endian order style.
-
-        :param int year: Year
-        :param int month: Month
-        :param bool wildcard: Use wildcard instead day
-        :rtype: str
-        """
         cdef char date[MAX_DATE_LENGTH]
 
         if wildcard:
@@ -195,14 +156,6 @@ cdef class MiddleEndianDateFormatter(DateFormatter):
         return date
 
     cpdef str fmt_day(self, int year, int month, int day):
-        """
-        Format and returns day in middle-endian order style.
-
-        :param int year: Year
-        :param int month: Month
-        :param int day: Day
-        :rtype: str
-        """
         cdef char date[MAX_DATE_LENGTH]
 
         sprintf(date, "%02d%c%02d%c%d", month, self.c_sep,

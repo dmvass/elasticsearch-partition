@@ -20,16 +20,16 @@ def _now_func():
 
 
 cdef class RangePartition:
-    """
-    Range partitioning maps data to partitions based on ranges of values
-    of the partitioning index name that you establish for each partition.
-    It is the most common type of partitioning and is often used with dates.
+    """This class implements a callable interface for create range
+    partition indexes by date with specified frequency.
 
-    For an index with a date prefix as the partitioning key, the January-2018
-    partition would has name with partitioning prefix from '2018-01-01'
-    to '2018-01-31'.
+    :attr int frequency: index partitioning frequency
+    :attr str escape: special character which will be replaced on a date
+    :attr callable now_func: get now date function
+    :attr DateFormatter formatter: formatter instance
 
     """
+
     cdef:
         int frequency
         str escape
@@ -41,15 +41,7 @@ cdef class RangePartition:
                  formatter=None,
                  escape="*",
                  now_func=None):
-        """
-        Initialize range partitioning instance.
 
-        :param int frequency: Index partitioning frequency
-        :param DateFormatter formatter: Formatter instance
-        :param str escape: Special character which will be replaced on a date
-        :param callable now_func: Get now date function
-
-        """
         if formatter is None:
             self.formatter = BigEndianDateFormatter()
         else:
@@ -59,10 +51,10 @@ cdef class RangePartition:
         self.escape = escape
         self.now_func = now_func or _now_func
 
-    cdef str fmt_year(self, TimeWindow tw, date_t *date):
+    cdef str fmt_yearly(self, TimeWindow tw, date_t *date):
         return self.formatter.fmt_year(date.year, wildcard=False)
 
-    cdef str fmt_month(self, TimeWindow tw, date_t *date):
+    cdef str fmt_monthly(self, TimeWindow tw, date_t *date):
         cdef str fmt_date
 
         if date.year == tw.since.year or date.year == tw.until.year:
@@ -74,7 +66,7 @@ cdef class RangePartition:
 
         return fmt_date
 
-    cdef str fmt_day(self, TimeWindow tw, date_t *date):
+    cdef str fmt_daily(self, TimeWindow tw, date_t *date):
         cdef str fmt_date
 
         if date.year == tw.since.year and date.month == tw.since.month:
@@ -95,12 +87,11 @@ cdef class RangePartition:
         return fmt_date
 
     cdef list partition(self, str pattern, TimeWindow tw):
-        """
-        This method create and returns Elasticsearch partitioned indexes
-        by date frequency.
+        """Creates and returns Elasticsearch partitioned indexes by
+        date with specified frequency.
 
-        :param str pattern: Index name with a special character
-        :param TimeWindow time_window: Time window instance
+        :param str pattern: index name with a special character
+        :param TimeWindow time_window: time window instance
         :rtype: list
 
         """
@@ -113,11 +104,11 @@ cdef class RangePartition:
 
         # Defines the frequency formatting function
         if self.frequency == FREQUENCY.YEAR:
-            func_ptr = self.fmt_year
+            func_ptr = self.fmt_yearly
         elif self.frequency == FREQUENCY.MONTH:
-            func_ptr = self.fmt_month
+            func_ptr = self.fmt_monthly
         else:
-            func_ptr = self.fmt_day
+            func_ptr = self.fmt_daily
 
         tw.calculate(self.frequency)
 
@@ -129,12 +120,12 @@ cdef class RangePartition:
         return indexes
 
     def __call__(self, pattern, since=None, until=None):
-        """
-        Returns Elasticsearch partitioned indexes by date range.
+        """Creates and returns Elasticsearch partitioned indexes by
+        date with specified frequency.
 
-        :param str pattern: Index name with a special character
-        :param datetime since: Since partitioning date
-        :param datetime until: Until partitioning date
+        :param str pattern: index name with a special character
+        :param datetime since: since partitioning date
+        :param datetime until: until partitioning date
 
         """
         if self.escape not in pattern:
