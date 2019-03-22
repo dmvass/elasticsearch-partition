@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.0.0] - 2019-03-22
+### Added
+- Cython implementation
+
 ## [1.0.3] - 2019-02-23
 ### Fixed
 - Package description content type
